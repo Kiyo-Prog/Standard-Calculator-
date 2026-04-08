@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimalist Pro Calculator</title>
+    <style>
+        :root {
+            --bg-color: #e0e5ec;
+            --text-color: #44475a;
+            --shadow-light: #ffffff;
+            --shadow-dark: #a3b1c6;
+            --accent: #6d5dfc;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .calculator {
+            background-color: var(--bg-color);
+            padding: 25px;
+            border-radius: 30px;
+            box-shadow: 20px 20px 60px var(--shadow-dark),
+                       -20px -20px 60px var(--shadow-light);
+            width: 320px;
+        }
+
+        .display {
+            width: 100%;
+            height: 80px;
+            background: none;
+            border: none;
+            outline: none;
+            text-align: right;
+            font-size: 2.5rem;
+            color: var(--text-color);
+            padding: 10px;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+            font-weight: 300;
+            /* Inset shadow for the screen look */
+            box-shadow: inset 6px 6px 12px var(--shadow-dark),
+                        inset -6px -6px 12px var(--shadow-light);
+            border-radius: 15px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            background: var(--bg-color);
+            box-shadow: 6px 6px 12px var(--shadow-dark),
+                        -6px -6px 12px var(--shadow-light);
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            outline: none;
+        }
+
+        button:active {
+            box-shadow: inset 4px 4px 8px var(--shadow-dark),
+                        inset -4px -4px 8px var(--shadow-light);
+            transform: scale(0.98);
+        }
+
+        .operator {
+            color: var(--accent);
+        }
+
+        .clear {
+            color: #ff5555;
+        }
+
+        .equals {
+            background: var(--accent);
+            color: white;
+            border-radius: 15px;
+            grid-column: span 2;
+            width: 135px;
+            box-shadow: 6px 6px 12px #b8b9be,
+                        -6px -6px 12px #ffffff;
+        }
+
+        .equals:active {
+            background: #5b4edb;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calculator">
+    <input type="text" class="display" id="screen" placeholder="0" disabled>
+    <div class="buttons">
+        <button class="clear" onclick="clearScreen()">AC</button>
+        <button class="operator" onclick="backspace()">⌫</button>
+        <button class="operator" onclick="appendValue('/')">÷</button>
+        <button class="operator" onclick="appendValue('*')">×</button>
+        
+        <button onclick="appendValue('7')">7</button>
+        <button onclick="appendValue('8')">8</button>
+        <button onclick="appendValue('9')">9</button>
+        <button class="operator" onclick="appendValue('-')">−</button>
+        
+        <button onclick="appendValue('4')">4</button>
+        <button onclick="appendValue('5')">5</button>
+        <button onclick="appendValue('6')">6</button>
+        <button class="operator" onclick="appendValue('+')">+</button>
+        
+        <button onclick="appendValue('1')">1</button>
+        <button onclick="appendValue('2')">2</button>
+        <button onclick="appendValue('3')">3</button>
+        <button onclick="appendValue('.')">.</button>
+        
+        <button onclick="appendValue('0')">0</button>
+        <button class="equals" onclick="calculate()">=</button>
+    </div>
+</div>
+
+<script>
+    const screen = document.getElementById('screen');
+
+    function appendValue(value) {
+        if (screen.value === "Error") screen.value = "";
+        screen.value += value;
+    }
+
+    function clearScreen() {
+        screen.value = "";
+    }
+
+    function backspace() {
+        screen.value = screen.value.slice(0, -1);
+    }
+
+    function calculate() {
+        try {
+            // Using Function() instead of eval() for slightly better practice
+            screen.value = new Function('return ' + screen.value)();
+        } catch (e) {
+            screen.value = "Error";
+        }
+    }
+</script>
+
+</body>
+</html>
